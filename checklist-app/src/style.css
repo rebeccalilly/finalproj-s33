@@ -7832,3 +7832,16 @@ video {
 .\[\&\:\:-webkit-slider-thumb\]\:\[-webkit-appearance\:none\]::-webkit-slider-thumb {
   -webkit-appearance: none;
 }
+
+.checklist {
+  displaY: flex;
+  flex-direction: row;
+}
+.checklist_left{
+  position: relative;
+  flex: 0.3;
+}
+
+.checklist_right{
+  flex: 0.7;
+}

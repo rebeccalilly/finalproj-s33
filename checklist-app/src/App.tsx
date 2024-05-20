@@ -1,13 +1,16 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './style.css'
+import "./style.css";
+import { DefaultSidebar } from "./sidebar.tsx";
+import { ListWithIcon } from "./checklist.tsx";
 
 function App() {
-
   return (
-    <div>Home</div>
-  )
+    <div class="flex flex-row">
+      <div class="flex-[0.3]">{DefaultSidebar()}</div>
+      <div class="relative h-32 w-32">
+        <div>{ListWithIcon()}</div>
+      </div>
+    </div>
+  );
 }
 
-export default App
+export default App;
