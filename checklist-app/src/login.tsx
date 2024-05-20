@@ -4,7 +4,7 @@ import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/solid";
 import auth from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
-export function Login() {
+export function Login(setWhichPage) {
   const [passwordShown, setPasswordShown] = useState(false);
   const togglePasswordVisibility = () => setPasswordShown((prev) => !prev);
 
@@ -16,6 +16,7 @@ export function Login() {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log(user.email + " logged in");
+        setWhichPage(1);
       })
       .catch((error) => {
         const errorCode = error.code;

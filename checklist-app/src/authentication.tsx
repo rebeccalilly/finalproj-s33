@@ -4,7 +4,7 @@ import Login from "./login";
 import Signup from "./signup";
 import { Typography } from "@material-tailwind/react";
 
-function Authentication() {
+function Authentication(setWhichPage) {
   const [active, setActive] = useState("login");
 
   const handleChange = () => {
@@ -13,7 +13,11 @@ function Authentication() {
   return (
     <div className="w-full">
       <div className="w-[100%]">
-        {active === "login" ? <Login /> : <Signup />}{" "}
+        {active === "login" ? (
+          <Login setWhichPage={setWhichPage} />
+        ) : (
+          <Signup />
+        )}{" "}
         <Typography
           variant="small"
           color="gray"
