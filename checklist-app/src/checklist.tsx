@@ -8,6 +8,7 @@ import {
   Input,
 } from "@material-tailwind/react";
 import Draggable from "react-draggable";
+import { ChromePicker } from "react-color";
 
 function PencilIcon() {
   return (
@@ -48,6 +49,8 @@ export function ListWithIcon() {
   const [editableItemIndex, setEditableItemIndex] = useState(-1);
   const [newItemName, setNewItemName] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+  const [boxColor, setBoxColor] = useState("#E8E6E6");
+  const [showColorPicker, setShowColorPicker] = useState(false);
 
   const handleDeleteItem = (index) => {
     const updatedItems = [...items];
@@ -67,14 +70,24 @@ export function ListWithIcon() {
     setEditableItemIndex(-1);
   };
 
+  const handleColorChange = (color) => {
+    setBoxColor(color.hex);
+  };
+
+  const bounds = { left: -700 };
+
+  const toggleColorPicker = () => {
+    setShowColorPicker(!showColorPicker);
+  };
+
   if (items.length === 0) {
     return null;
   }
 
   return (
-    <Draggable>
+    <Draggable bounds={bounds} cancel=".chrome-picker, .saturation-guider">
       <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-        <Card className="w-96">
+        <Card className="w-96" style={{ backgroundColor: boxColor }}>
           <List>
             {items.map((item, index) => (
               <ListItem key={index} ripple={false} className="py-1 pr-1 pl-4">
@@ -89,7 +102,6 @@ export function ListWithIcon() {
                     onBlur={() => handleSaveEdit(index)}
                     onFocus={() => setIsEditing(true)}
                     autoFocus
-                    /*This part doesn't work. Let me know if you all could fix it so that the border when typing isn't black but a dark gray.*/
                     className={`outline-gray ring-2 ring-gray-500 bg-gray-300 ${
                       isEditing ? "bg-gray-100" : ""
                     }`}
@@ -118,6 +130,29 @@ export function ListWithIcon() {
               </ListItem>
             ))}
           </List>
+          <div className="flex justify-end relative z-20">
+            <IconButton
+              variant="text"
+              color="blue-gray"
+              onClick={toggleColorPicker}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="h-5 w-5"
+              >
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path d="m15 11.25 1.5 1.5.75-.75V8.758l2.276-.61a3 3 0 1 0-3.675-3.675l-.61 2.277H12l-.75.75 1.5 1.5M15 11.25l-8.47 8.47c-.34.34-.8.53-1.28.53s-.94.19-1.28.53l-.97.97-.75-.75.97-.97c.34-.34.53-.8.53-1.28s.19-.94.53-1.28L12.75 9M15 11.25 12.75 9" />
+              </svg>
+            </IconButton>
+          </div>
+          {showColorPicker && (
+            <div className="chrome-picker absolute bottom-0 left-0 ml-2 mb-2">
+              <ChromePicker color={boxColor} onChange={handleColorChange} />
+            </div>
+          )}
+          {/**/}
         </Card>
       </div>
     </Draggable>
