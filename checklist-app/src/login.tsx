@@ -26,8 +26,13 @@ export function Login() {
   };
 
   return (
-    <section className="grid place-items-center h-screen p-8">
+    <section className="grid place-items-center p-1">
       <div>
+        <img
+          src="https://api.logo.com/api/v2/images?logo=logo_6213aef0-3840-4904-bd11-7676b87f5e4f&u=1716304552848&format=svg&margins=166&width=1000&height=750&fit=contain"
+          className="grid mx-auto max-w-[24rem] p-0"
+          alt="Logo"
+        />
         <Typography variant="h3" color="blue-gray" className="mb-2">
           Sign In
         </Typography>
@@ -53,7 +58,7 @@ export function Login() {
               placeholder="name@mail.com"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              className="w-full placeholder-opacity-100 focus:border-t-primary border-t-blue-gray-200"
+              className="w-full placeholder-opacity-100 border-t-blue-gray-200"
               labelProps={{
                 className: "hidden",
               }}
@@ -90,7 +95,7 @@ export function Login() {
             />
           </div>
           <Button
-            color="gray"
+            color="purple"
             size="lg"
             className="mt-6"
             fullWidth
