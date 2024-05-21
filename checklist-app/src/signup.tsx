@@ -29,12 +29,21 @@ function Signup() {
   };
 
   return (
-    <section className="grid place-items-center h-screen p-8">
+    <section className="grid place-items-center p-2">
       <div>
-        <Typography variant="h3" color="blue-gray" className="mb-2">
+        <img
+          src="https://api.logo.com/api/v2/images?logo=logo_6213aef0-3840-4904-bd11-7676b87f5e4f&u=1716304552848&format=svg&margins=166&width=1000&height=750&fit=contain"
+          className="grid mx-auto max-w-[24rem]"
+          alt="Logo"
+        />
+        <Typography
+          variant="h3"
+          color="blue-gray"
+          className="mb-2 grid mx-auto max-w-[24rem]"
+        >
           Sign Up
         </Typography>
-        <Typography className="mb-16 text-gray-600 font-normal text-[18px]">
+        <Typography className="mb-10 text-gray-600 font-normal text-[18px] grid mx-auto max-w-[24rem]">
           Enter your username, email, and password to sign up
         </Typography>
         <form className="mx-auto max-w-[24rem] text-left">
@@ -55,7 +64,7 @@ function Signup() {
               type="text"
               placeholder="Your username"
               value={username}
-              className="w-full placeholder-opacity-100 focus:border-t-primary border-t-blue-gray-200"
+              className="w-full placeholder-opacity-100 focus:border--primary border-t-blue-gray-200"
               labelProps={{
                 className: "hidden",
               }}
@@ -109,7 +118,7 @@ function Signup() {
           </div>
           <Button
             onClick={handleSignup}
-            color="gray"
+            color="purple"
             size="lg"
             className="mt-6"
             fullWidth
