@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   List,
   ListItem,
@@ -9,6 +9,7 @@ import {
 } from "@material-tailwind/react";
 import Draggable from "react-draggable";
 import { ChromePicker } from "react-color";
+import { PlusIcon } from "@heroicons/24/solid";
 
 function PencilIcon() {
   return (
@@ -51,6 +52,9 @@ export function ListWithIcon() {
   const [isEditing, setIsEditing] = useState(false);
   const [boxColor, setBoxColor] = useState("#E8E6E6");
   const [showColorPicker, setShowColorPicker] = useState(false);
+  const [textColor, setTextColor] = useState("#000000");
+  const [showTextColorPicker, setShowTextColorPicker] = useState(false);
+  const [itemCount, setItemCount] = useState(items.length + 1);
 
   const handleDeleteItem = (index) => {
     const updatedItems = [...items];
@@ -80,9 +84,61 @@ export function ListWithIcon() {
     setShowColorPicker(!showColorPicker);
   };
 
+  const handleTextColorChange = (color) => {
+    setTextColor(color.hex);
+  };
+
+  const toggleTextColorPicker = () => {
+    setShowTextColorPicker(!showTextColorPicker);
+  };
+
+  const handleAddItem = () => {
+    const newItem = `Item ${itemCount}`;
+    setItems([...items, newItem]);
+    setItemCount(itemCount + 1);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        colorPickerRef.current &&
+        !colorPickerRef.current.contains(event.target)
+      ) {
+        setShowColorPicker(false);
+        setShowTextColorPicker(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   if (items.length === 0) {
     return null;
   }
+
+  const colorPickerRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        colorPickerRef.current &&
+        !colorPickerRef.current.contains(event.target)
+      ) {
+        setShowColorPicker(false);
+        setShowTextColorPicker(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <Draggable bounds={bounds} cancel=".chrome-picker, .saturation-guider">
@@ -108,7 +164,7 @@ export function ListWithIcon() {
                   />
                 ) : (
                   <>
-                    {item}
+                    <span style={{ color: textColor }}>{item}</span>
                     <ListItemSuffix className="flex">
                       <IconButton
                         variant="text"
@@ -124,35 +180,73 @@ export function ListWithIcon() {
                       >
                         <TrashIcon />
                       </IconButton>
+                      {index === items.length - 1 && (
+                        <IconButton onClick={handleAddItem}>
+                          <PlusIcon />
+                        </IconButton>
+                      )}
                     </ListItemSuffix>
                   </>
                 )}
               </ListItem>
             ))}
           </List>
-          <div className="flex justify-end relative z-20">
-            <IconButton
-              variant="text"
-              color="blue-gray"
-              onClick={toggleColorPicker}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="h-5 w-5"
+          <div className="flex justify-end relative">
+            <div className="flex justify-end relative z-20">
+              <IconButton
+                variant="text"
+                color="blue-gray"
+                onClick={toggleColorPicker}
               >
-                <path d="M0 0h24v24H0z" fill="none" />
-                <path d="m15 11.25 1.5 1.5.75-.75V8.758l2.276-.61a3 3 0 1 0-3.675-3.675l-.61 2.277H12l-.75.75 1.5 1.5M15 11.25l-8.47 8.47c-.34.34-.8.53-1.28.53s-.94.19-1.28.53l-.97.97-.75-.75.97-.97c.34-.34.53-.8.53-1.28s.19-.94.53-1.28L12.75 9M15 11.25 12.75 9" />
-              </svg>
-            </IconButton>
-          </div>
-          {showColorPicker && (
-            <div className="chrome-picker absolute bottom-0 left-0 ml-2 mb-2">
-              <ChromePicker color={boxColor} onChange={handleColorChange} />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="h-5 w-5"
+                >
+                  <path d="M0 0h24v24H0z" fill="none" />
+                  <path d="m15 11.25 1.5 1.5.75-.75V8.758l2.276-.61a3 3 0 1 0-3.675-3.675l-.61 2.277H12l-.75.75 1.5 1.5M15 11.25l-8.47 8.47c-.34.34-.8.53-1.28.53s-.94.19-1.28.53l-.97.97-.75-.75.97-.97c.34-.34.53-.8.53-1.28s.19-.94.53-1.28L12.75 9M15 11.25 12.75 9" />
+                </svg>
+              </IconButton>
             </div>
-          )}
-          {/**/}
+            {showColorPicker && (
+              <div
+                ref={colorPickerRef}
+                className="chrome-picker absolute bottom-0 left-0 ml-2 mb-2"
+              >
+                <ChromePicker color={boxColor} onChange={handleColorChange} />
+              </div>
+            )}
+            {/**/}
+            <div className="flex justify end relative">
+              <IconButton
+                variant="text"
+                color="blue-gray"
+                onClick={toggleTextColorPicker}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="h-5 w-5"
+                >
+                  <path d="M0 0h24v24H0z" fill="none" />
+                  <path d="M4.848 2.771A49.144 49.144 0 0 1 12 2.25c2.43 0 4.817.178 7.152.52 1.978.292 3.348 2.024 3.348 3.97v6.02c0 1.946-1.37 3.678-3.348 3.97a48.901 48.901 0 0 1-3.476.383.39.39 0 0 0-.297.17l-2.755 4.133a.75.75 0 0 1-1.248 0l-2.755-4.133a.39.39 0 0 0-.297-.17 48.9 48.9 0 0 1-3.476-.384c-1.978-.29-3.348-2.024-3.348-3.97V6.741c0-1.946 1.37-3.68 3.348-3.97ZM6.75 8.25a.75.75 0 0 1 .75-.75h9a.75.75 0 0 1 0 1.5h-9a.75.75 0 0 1-.75-.75Zm.75 2.25a.75.75 0 0 0 0 1.5H12a.75.75 0 0 0 0-1.5H7.5Z" />
+                </svg>
+              </IconButton>
+            </div>
+            {showTextColorPicker && (
+              <div
+                ref={colorPickerRef}
+                className="chrome-picker absolute bottom-0 left-0 ml-2 mb-2"
+              >
+                <ChromePicker
+                  color={textColor}
+                  onChange={handleTextColorChange}
+                />
+              </div>
+            )}
+          </div>
         </Card>
       </div>
     </Draggable>
