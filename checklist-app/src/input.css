@@ -1,3 +1,35 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.collapse_env {
+    @apply ml-[40px] shadow-lg w-96 mt-[40px]
+}
+
+.checklist_card {
+    @apply w-96
+}
+
+.checklist_name {
+    @apply ml-[40px] mt-[10px]
+}
+
+.list_body {
+    @apply flex flex-col
+}
+
+.title {
+    @apply border-none outline-none
+}
+
+.add_item {
+    @apply text-lg pt-[5px] pr-[10px] pb-[5px] pl-[10px]
+}
+
+.welcome {
+    @apply text-4xl font-bold ml-[20px] mt-[20px]
+}
+
+.new_button {
+    @apply mt-[15px] pt-[5px] pb-[5px] pr-[8px] pl-[8px] ml-[20px] w-36
+}
