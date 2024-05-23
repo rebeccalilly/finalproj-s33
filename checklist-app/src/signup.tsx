@@ -7,21 +7,22 @@ import {
 } from "firebase/auth";
 import auth from "../firebase";
 
-function Signup() {
+function Signup({ setWhichPage, setCurrentUser }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
 
   const handleSignup = () => {
     createUserWithEmailAndPassword(auth, email, password)
-      .then(() => {
-        signInWithEmailAndPassword(auth, email, password)
-          .then(() => {
-            updateProfile(auth.currentUser, { displayName: username });
-          })
-          .catch((err) => {
-            alert(err);
-          });
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log("user with email " + user.email + " created!");
+
+        updateProfile(user, { displayName: username }).then(() => {
+          console.log(user.displayName);
+          setCurrentUser(user);
+          setWhichPage(1);
+        });
       })
       .catch((err) => {
         alert(err);
